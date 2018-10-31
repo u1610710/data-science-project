@@ -1,6 +1,6 @@
 ---
 title: "ST344 EDA1"
-author: "Lewei He"
+author: "Alexander Milanovic"
 date: "30/10/2018"
 output: pdf_document
 ---
