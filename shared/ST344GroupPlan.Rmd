@@ -1,0 +1,38 @@
+---
+title: "ST344: Group Plan"
+author: "June Data Group"
+output: pdf_document
+---
+
+```{r setup, include=FALSE, echo=FALSE, message=FALSE, warning =FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Group overview
+
+During our preliminary meeting we discussed the tasks of the project and after sharing our personal strengths decided to delagate specific areas to each person. 
+
+ * Alex: Coding in R, Python and C++ and report writing in R Markdown and LaTeX.
+ * Ben: Report writing and presenting.
+ * Langlang: Data analysis and coding in R.
+ * Lewei: Project management and programming.
+ 
+## Milestones and Timeline
+
+The Gantt chart below illustrates when the proposed milestones are scheduled to run, as well as what times the group will meet to discuss progress. The group is to meet every Wednesday between 13:00 and 15:00, with additional group meetings the week before the presentation is due to take place in order to rehearse for it.
+
+```{r, echo=FALSE, message=FALSE, warning =FALSE, eval=FALSE}
+#Set eval = TRUE above to include the table (may want to check it matches with gantt chart)
+library(knitr)
+library(kableExtra)
+timetable <- read.csv("st344GroupPlan.csv",header = TRUE)   #Need st344GroupPlan.csv in working directory
+timetable <-timetable[1:17,1:5]
+kable(timetable) %>%
+  row_spec(c(1,3,6,8,13,14,15), bold = T, background = "#5db8e0")
+  
+
+```
+
+```{r pressure, echo=FALSE, out.height='50%'}
+knitr::include_graphics("Gantt.png")   #Need Gantt.png in working directory
+```
