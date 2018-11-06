@@ -1,0 +1,61 @@
+---
+title: "Groupwork EDA"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##EDA on category 18, 10, 2, 3
+
+###Importing data and constructing dataset needded for analysing
+```{r chunk1,message=FALSE,warning=FALSE}
+library(readr)
+atussum_0317 <- read_csv("atussum_0317.csv")
+EdaData<-data.frame(year=atussum_0317$TUYEAR, month=substr(atussum_0317 $ TUCASEID ,5,6), age=atussum_0317$TEAGE,sex=ifelse(atussum_0317$TESEX==1,"M","F"),salary=atussum_0317$TRERNWA)
+tu02<-atussum_0317[,grep("^t02",names(atussum_0317))]
+tu03<-atussum_0317[,grep("^t03",names(atussum_0317))]
+tu10<-atussum_0317[,grep("^t10",names(atussum_0317))]
+tu18<-atussum_0317[,grep("^t18",names(atussum_0317))]
+EdaData$tu02<-rowSums(tu02)
+EdaData$tu03<-rowSums(tu03)
+EdaData$tu10<-rowSums(tu10)
+EdaData$tu18<-rowSums(tu18)
+head(EdaData)
+```
+
+###2 Household Activities
+```{r chunk2,message=FALSE,warning=FALSE}
+library(dplyr)
+library(ggplot2)
+plot02.age<-EdaData %>% ggplot(aes(x=age,y=tu02,group=sex,color=sex))+facet_wrap(~year)+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot02.age
+
+plot02.year<-EdaData %>% ggplot(aes(x=year,y=tu02))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot02.year
+```
+
+###3
+```{r}
+plot03.year<-EdaData %>% ggplot(aes(x=year,y=tu03))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot03.year
+```
+
+
+###10
+```{r}
+plot10.year<-EdaData %>% ggplot(aes(x=year,y=tu10))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot10.year
+```
+
+
+###18
+```{r}
+plot18.year<-EdaData %>% ggplot(aes(x=year,y=tu18))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot18.year
+```
+
