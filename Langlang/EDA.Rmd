@@ -1,92 +1,62 @@
 ---
-title: "ST344 EDA1"
-author: "Lewei He"
-date: "30/10/2018"
-output: pdf_document
+title: "EDA"
+author: "Langlang Fan"
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r message = FALSE}
+
+##EDA on category 18, 10, 2, 3
+
+###Importing data and constructing dataset needded for analysing
+```{r chunk1,message=FALSE,warning=FALSE}
+library(readr)
+atussum_0317 <- read_csv("atussum_0317.csv")
+EdaData<-data.frame(year=atussum_0317$TUYEAR, month=substr(atussum_0317 $ TUCASEID ,5,6), age=atussum_0317$TEAGE,sex=ifelse(atussum_0317$TESEX==1,"M","F"),salary=atussum_0317$TRERNWA)
+tu02<-atussum_0317[,grep("^t02",names(atussum_0317))]
+tu03<-atussum_0317[,grep("^t03",names(atussum_0317))]
+tu10<-atussum_0317[,grep("^t10",names(atussum_0317))]
+tu18<-atussum_0317[,grep("^t18",names(atussum_0317))]
+EdaData$tu02<-rowSums(tu02)
+EdaData$tu03<-rowSums(tu03)
+EdaData$tu10<-rowSums(tu10)
+EdaData$tu18<-rowSums(tu18)
+head(EdaData)
+```
+
+###2 Household Activities
+```{r chunk2,message=FALSE,warning=FALSE}
 library(dplyr)
 library(ggplot2)
+plot02.age<-EdaData %>% ggplot(aes(x=age,y=tu02,group=sex,color=sex))+facet_wrap(~year)+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot02.age
+
+plot02.year<-EdaData %>% ggplot(aes(x=year,y=tu02))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot02.year
 ```
 
+###3
 ```{r}
-atus <- read.csv("atussum_0317.csv")
-```
-
-```{r}
-mydata <- data.frame(year = atus $ TUYEAR,
-                     month = substr(atus[, 1], 5, 6),
-                     age = atus $ TEAGE,
-                     sex = ifelse(atus $ TESEX == 1, "M", "F")
-                    )
-```
-
-```{r}
-tu01 <- atus[, grep("^t01", names(atus))]
-tu05 <- atus[, grep("^t05", names(atus))]
-tu06 <- atus[, grep("^t06", names(atus))]
-tu07 <- atus[, grep("^t07", names(atus))]
-tu08 <- atus[, grep("^t08", names(atus))]
-mydata $ tu01 <- rowSums(tu01)
-mydata $ tu05 <- rowSums(tu05)
-mydata $ tu06 <- rowSums(tu06)
-mydata $ tu07 <- rowSums(tu07)
-mydata $ tu08 <- rowSums(tu08)
-head(mydata)
-```
-
-```{r}
-summary(mydata)
-```
-```{r}
-subdata <- subset(mydata, mydata[ ,"year"] == 2017)
-```
-
-```{r}
-plot01.year <- {mydata %>% ggplot(aes(x = year, y = tu01))} + geom_smooth()
-plot01.year
-plot01.month <- {subdata %>% ggplot(aes(x = month, y = tu01))} + geom_smooth()
-plot01.month
+plot03.year<-EdaData %>% ggplot(aes(x=year,y=tu03))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot03.year
 ```
 
 
+###10
 ```{r}
-plot05.year <- mydata %>% ggplot(aes(x = year, y = tu05)) + geom_smooth()
-plot05.year
-plot05.month <- mydata %>% ggplot(aes(x = month, y = tu05)) + geom_smooth()
-plot05.month
-plot05.year.perc <- mydata %>% ggplot(aes(x = year, y = 100 * (tu05 > 0))) + geom_smooth()
-plot05.year.perc
+plot10.year<-EdaData %>% ggplot(aes(x=year,y=tu10))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot10.year
 ```
 
+
+###18
 ```{r}
-plot06.year <- mydata %>% ggplot(aes(x = year, y = tu06)) + geom_smooth()
-plot06.year
-plot06.month <- mydata %>% ggplot(aes(x = month, y = tu06)) +geom_point()
-plot06.month
-plot06.year.perc <- mydata %>% ggplot(aes(x = year, y = 100 * (tu06 > 0))) + geom_smooth()
-plot06.year.perc
+plot18.year<-EdaData %>% ggplot(aes(x=year,y=tu18))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Month of year",y="",title = "Time-series")
+plot18.year
 ```
 
-```{r}
-plot07.year <- mydata %>% ggplot(aes(x = year, y = tu07)) + geom_smooth()
-plot07.year
-plot07.month <- mydata %>% ggplot(aes(x = month, y = tu07)) + geom_smooth()
-plot07.month
-plot07.year.perc <- mydata %>% ggplot(aes(x = year, y = 100 * (tu07 > 0))) + geom_smooth()
-plot07.year.perc
-```
-
-```{r}
-plot08.year <- mydata %>% ggplot(aes(x = year, y = tu08)) + geom_smooth()
-plot08.year
-plot08.month <- mydata %>% ggplot(aes(x = month, y = tu08)) + geom_smooth()
-plot08.month
-plot08.year.perc <- mydata %>% ggplot(aes(x = year, y = 100 * (tu08 > 0))) + geom_smooth()
-plot08.year.perc
-```
