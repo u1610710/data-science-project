@@ -1,0 +1,82 @@
+---
+title: "EDA"
+author: "Langlang Fan"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+
+
+##EDA on category 2, 3, 10, 18 
+
+####Importing data and constructing dataset needded for analysing
+```{r chunk1,message=FALSE,warning=FALSE}
+library(readr)
+atussum_0317 <- read_csv("atussum_0317.csv")
+EdaData<-data.frame(year=atussum_0317$TUYEAR,yearmonth=substr(atussum_0317$TUCASEID,3,6), month=substr(atussum_0317 $ TUCASEID ,5,6), age=atussum_0317$TEAGE,sex=ifelse(atussum_0317$TESEX==1,"M","F"),salary=atussum_0317$TRERNWA)
+tu02<-atussum_0317[,grep("^t02",names(atussum_0317))]
+tu03<-atussum_0317[,grep("^t03",names(atussum_0317))]
+tu10<-atussum_0317[,grep("^t10",names(atussum_0317))]
+tu18<-atussum_0317[,grep("^t18",names(atussum_0317))]
+EdaData$tu02<-rowSums(tu02)
+EdaData$tu03<-rowSums(tu03)
+EdaData$tu10<-rowSums(tu10)
+EdaData$tu18<-rowSums(tu18)
+head(EdaData)
+```
+
+
+
+###2 Household Activities
+```{r chunk2,message=FALSE,warning=FALSE}
+plot02.year<-EdaData %>% ggplot(aes(x=year,y=tu02))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Year",y="Time used")
+plot02.year
+
+plot02.yearmonth<-EdaData %>% ggplot(aes(x=factor(yearmonth),y=tu02))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+facet_wrap(~year,scales = "free_x")
+plot02.yearmonth
+```
+
+
+
+###3 Caring for and helping household member
+sum of the time used of one respondent over a year 
+```{r,message=FALSE}
+plot03.year<-EdaData %>% ggplot(aes(x=year,y=tu03))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Year",y="Time used")
+plot03.year
+
+plot03.yearmonth<-EdaData %>% ggplot(aes(x=factor(yearmonth),y=tu03))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+facet_wrap(~year,scales = "free_x")
+plot03.yearmonth
+```
+
+
+
+###10 Government services and civic obligations
+```{r,message=FALSE}
+plot10.year<-EdaData %>% ggplot(aes(x=year,y=tu10))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Year",y="Time used")
+plot10.year
+
+plot10.yearmonth<-EdaData %>% ggplot(aes(x=factor(yearmonth),y=tu10))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+facet_wrap(~year,scales = "free_x")
+plot10.yearmonth
+```
+
+
+###18 Telephone call
+```{r,message=FALSE}
+plot18.year<-EdaData %>% ggplot(aes(x=year,y=tu18))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+labs(x="Year",y="Time used")
+plot18.year
+
+plot18.yearmonth<-EdaData %>% ggplot(aes(x=factor(yearmonth),y=tu18))+geom_smooth(aes(group=sex,color=sex))+geom_smooth()+facet_wrap(~year,scales = "free_x")
+plot18.yearmonth
+```
